@@ -1,0 +1,24 @@
+{
+  "name": "signals-vs-vdom",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "bootstrap": "pnpm install && pnpm -r build",
+    "dev:react": "pnpm --filter react-vdom dev",
+    "dev:solid": "pnpm --filter solid-signals dev",
+    "bench:react": "tsx bench/harness/runner.ts react",
+    "bench:solid": "tsx bench/harness/runner.ts solid",
+    "bench:all": "tsx bench/harness/runner.ts all",
+    "report": "tsx bench/harness/aggregate.ts && tsx bench/harness/report.ts",
+    "ci": "pnpm -r build && pnpm bench:all && pnpm report"
+  },
+  "workspaces": ["apps/*", "packages/*"],
+  "devDependencies": {
+    "csv-stringify": "^6.5.0",
+    "puppeteer": "^21.0.0",
+    "tsx": "^4.7.0",
+    "vega": "^5.25.0",
+    "vega-embed": "^6.22.2",
+    "vega-lite": "^5.16.3"
+  }
+}

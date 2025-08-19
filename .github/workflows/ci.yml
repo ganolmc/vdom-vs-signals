@@ -1,0 +1,56 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: npm i -g pnpm@latest
+      - run: pnpm install
+      - run: pnpm -r build
+  bench:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: npm i -g pnpm@latest
+      - run: pnpm install
+      - run: pnpm bench:all
+  publish:
+    runs-on: ubuntu-latest
+    needs: bench
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: npm i -g pnpm@latest
+      - run: pnpm install
+      - run: pnpm report
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bench-results
+          path: bench/results
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bench-reports
+          path: bench/reports
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: bench/reports
+          force_orphan: true

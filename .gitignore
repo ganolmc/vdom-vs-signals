@@ -1,0 +1,7 @@
+node_modules
+apps/*/dist
+packages/*/dist
+bench/results/*
+!bench/results/.gitkeep
+bench/reports/*
+!bench/reports/.gitkeep
