@@ -74,9 +74,17 @@ importers:
         specifier: ^2.8.0
         version: 2.11.8(solid-js@1.9.9)(vite@5.4.19(@types/node@24.3.0))
 
-  packages/scenarios: {}
+  packages/scenarios:
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.2
 
-  packages/shared-data: {}
+  packages/shared-data:
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.2
 
 packages:
 

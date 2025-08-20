@@ -10,7 +10,8 @@
     "bench:solid": "tsx bench/harness/runner.ts solid",
     "bench:all": "tsx bench/harness/runner.ts all",
     "report": "tsx bench/harness/aggregate.ts && tsx bench/harness/report.ts",
-    "ci": "pnpm -r build && pnpm bench:all && pnpm report"
+    "report:enhanced": "tsx bench/report/aggregate.ts && tsx bench/report/charts.ts && tsx bench/report/populate-report.ts",
+    "ci": "pnpm -r build && pnpm bench:all && pnpm report:enhanced"
   },
   "workspaces": ["apps/*", "packages/*"],
   "devDependencies": {
