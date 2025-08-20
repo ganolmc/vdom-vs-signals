@@ -54,8 +54,9 @@ function createVegaLiteSpec(
       fontSize: 16,
       anchor: "start",
     },
-    width: 600,
-    height: 400,
+    width: 400,
+    height: 480,
+    autosize: { type: "fit", contains: "padding" },
     data: {
       values: data.flatMap((d) => [
         {
@@ -191,8 +192,8 @@ async function generateCharts(runId: string) {
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #vis { margin: 20px 0; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 16px; box-sizing: border-box; }
+    #vis { margin: 20px 0; width: 100%; }
   </style>
 </head>
 <body>
@@ -201,7 +202,8 @@ async function generateCharts(runId: string) {
   <script>
     const spec = ${JSON.stringify(spec)};
     vegaEmbed('#vis', spec, {
-      actions: { export: true, source: false, compiled: false, editor: false }
+      actions: false,
+      renderer: "canvas"
     }).then(result => {
       // Export as PNG
       result.view.toImageURL('png').then(url => {
@@ -239,34 +241,76 @@ async function generateCharts(runId: string) {
 <head>
   <title>Benchmark Charts - Run ${runId}</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-    .chart-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
-    .chart-card h3 { margin-top: 0; }
-    .chart-card iframe { width: 100%; height: 500px; border: none; }
+    :root { --page-padding: 16px; }
+    body { 
+      margin: 0; 
+      padding: var(--page-padding); 
+      box-sizing: border-box; 
+      font-family: Arial, sans-serif;
+    }
+    .chart-block {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      padding: 0 var(--page-padding);
+      box-sizing: border-box;
+      margin-bottom: 40px;
+    }
+    .chart-block h3 { 
+      margin: 16px 0 8px; 
+      font-size: 1.5em;
+      color: #333;
+    }
+    .chart-block .figure {
+      width: 100%;
+      max-width: 100%;
+      height: 600px;
+      display: block;
+      border: none;
+    }
+    .chart-block svg {
+      width: 100%;
+      height: auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+    .header p {
+      color: #666;
+      font-size: 1.1em;
+    }
   </style>
 </head>
 <body>
-  <h1>React vs Solid Benchmark Results</h1>
-  <p><strong>Run ID:</strong> ${runId}</p>
-  <p><strong>Generated:</strong> ${new Date().toISOString()}</p>
-  
-  <div class="chart-grid">
-    ${generatedCharts
-      .map((chart) => {
-        const title = chart
-          .replace(".html", "")
-          .replace(/([A-Z])/g, " $1")
-          .replace(/^./, (str) => str.toUpperCase());
-        return `
-        <div class="chart-card">
-          <h3>${title}</h3>
-          <iframe src="figures/${chart}"></iframe>
-        </div>
-      `;
-      })
-      .join("")}
+  <div class="header">
+    <h1>React vs Solid Benchmark Results</h1>
+    <p><strong>Run ID:</strong> ${runId}</p>
+    <p><strong>Generated:</strong> ${new Date().toISOString()}</p>
   </div>
+  
+  ${generatedCharts
+    .map((chart) => {
+      const title = chart
+        .replace(".html", "")
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (str) => str.toUpperCase());
+      return `
+      <section class="chart-block">
+        <h3>${title}</h3>
+        <iframe src="figures/${chart}" class="figure"></iframe>
+      </section>
+    `;
+    })
+    .join("")}
 </body>
 </html>`;
 

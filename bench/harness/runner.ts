@@ -4,12 +4,17 @@ import { SCENARIOS } from "scenarios";
 import fs from "fs/promises";
 import path from "path";
 
-const ports: Record<string, number> = { react: 5175, solid: 5176 };
+const ports: Record<string, number> = { react: 5173, solid: 5174 };
 const runs = 10; // 10 runs per scenario as required
 
 async function runApp(app: "react" | "solid") {
   const browser = await launch();
   const page = await browser.newPage();
+
+  // Set increased timeouts for stability
+  page.setDefaultTimeout(120000); // 2 minutes
+  page.setDefaultNavigationTimeout(120000);
+
   const baseUrl = `http://localhost:${ports[app]}`;
   const timestamp = new Date().toISOString().replace(/[:]/g, "-").slice(0, 16);
 
