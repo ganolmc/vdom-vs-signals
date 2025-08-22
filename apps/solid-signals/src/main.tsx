@@ -1,5 +1,7 @@
-import { render } from 'solid-js/web';
-import App from './App';
-import './lib/perf';
+import { render } from "solid-js/web";
+import App from "./App";
 
-render(() => <App />, document.getElementById('root')!);
+import { Perf } from "./lib/perf";
+
+Perf.installPerfGlobals();
+render(() => <App />, document.getElementById("root")!);

@@ -5,3 +5,13 @@ bench/results/*
 !bench/results/.gitkeep
 bench/reports/*
 !bench/reports/.gitkeep
+
+# Benchmark data and reports
+bench/results/
+bench/reports/
+
+# IDE settings
+.vscode/
+
+# Temporary files
+nul
