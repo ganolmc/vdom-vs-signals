@@ -1,0 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export default function Filters({ region, timeframe, onRegionChange, onTimeframeChange }) {
+    return (_jsxs("div", { children: [_jsxs("select", { "data-test": "filter-region", value: region, onChange: e => onRegionChange(e.target.value), children: [_jsx("option", { "data-test": "option-us", value: "US", children: "US" }), _jsx("option", { "data-test": "option-eu", value: "EU", children: "EU" }), _jsx("option", { "data-test": "option-apac", value: "APAC", children: "APAC" })] }), _jsxs("select", { "data-test": "filter-timeframe", value: timeframe, onChange: e => onTimeframeChange(e.target.value), children: [_jsx("option", { "data-test": "7d", value: "7d", children: "7d" }), _jsx("option", { "data-test": "30d", value: "30d", children: "30d" }), _jsx("option", { "data-test": "90d", value: "90d", children: "90d" })] })] }));
+}
